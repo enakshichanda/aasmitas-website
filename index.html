@@ -10,7 +10,7 @@
       margin: 0;
       padding: 0;
       line-height: 1.6;
-      background-image: url('yarn.jpg');
+      background-image: url('images/background_scarf.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
@@ -19,14 +19,13 @@
     }
 
     header {
-      background-image: url('header.jpg');
+      background-image: url('images/background_scarf.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       color: white;
       padding: 20px 0;
       text-align: center;
-      z-index: 0;
     }
 
     header h1, header p {
@@ -39,6 +38,7 @@
       padding: 10px 0;
       border-top: 2px solid white;
       border-bottom: 2px solid white;
+      position: relative;
     }
 
     nav a {
@@ -46,24 +46,57 @@
       margin: 0 15px;
       text-decoration: none;
       cursor: pointer;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Preview box styling */
+    #preview-box {
+      position: absolute;
+      top: 40px; /* below nav */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 100;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    #preview-box img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-top: 8px;
     }
 
     .container {
       max-width: 900px;
       margin: 30px auto;
       padding: 20px;
-      background: rgba(128, 128, 128, 0.9);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       border-radius: 8px;
     }
 
     section {
       margin: 40px 0;
-      display: none; /* hide all by default */
+      display: none;
     }
 
     section.active {
-      display: block; /* show active section */
+      display: block;
+    }
+
+    /* Reduce space between contact info lines */
+    #contact p {
+      margin-bottom: 6px;
     }
 
     footer {
@@ -74,7 +107,6 @@
       margin-top: 40px;
     }
 
-    /* Floating home button */
     .home-btn {
       position: fixed;
       bottom: 20px;
@@ -98,7 +130,6 @@
       background-color: #444;
     }
 
-    /* Gallery styles */
     .gallery {
       display: flex;
       flex-wrap: wrap;
@@ -112,6 +143,66 @@
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form input,
+    form textarea {
+      width: 70%;
+      max-width: 500px;
+      padding: 10px;
+      margin: 8px 0 16px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    form button {
+      width: auto;
+      padding: 10px 20px;
+      background-color: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    form button:hover {
+      background-color: #333;
+    }
+
+    .form-box {
+      border: 2px solid #444;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.9);
+      margin-top: 20px;
+    }
+
+    /* Style for product headings */
+    .product-heading {
+      font-weight: bold;
+      font-style: italic;
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 600px) {
+      form input,
+      form textarea {
+        width: 100%;
+      }
+      #preview-box {
+        width: 90vw;
+        left: 5%;
+        transform: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -122,43 +213,102 @@
   </header>
 
   <nav>
-    <a onclick="showSection('about')">About</a>
-    <a onclick="showSection('products')">Products</a>
-    <a onclick="showSection('images')">Images</a>
-    <a onclick="showSection('contact')">Contact Us</a>
+    <a 
+      onclick="showSection('about')" 
+      onmouseenter="showPreview('about')" 
+      onmouseleave="hidePreview()"
+    >About</a>
+    <a 
+      onclick="showSection('products')" 
+      onmouseenter="showPreview('products')" 
+      onmouseleave="hidePreview()"
+    >Products</a>
+    <a 
+      onclick="showSection('images')" 
+      onmouseenter="showPreview('images')" 
+      onmouseleave="hidePreview()"
+    >Images</a>
+    <a 
+      onclick="showSection('contact')" 
+      onmouseenter="showPreview('contact')" 
+      onmouseleave="hidePreview()"
+    >Contact</a>
+
+    <div id="preview-box"></div>
   </nav>
 
   <div class="container">
     <section id="about" class="active">
-      <h2>About</h2>
-      <p>We are a home-grown design studio specializing in exquisite Muga silk fabrics. Crafting elegant clothes, bespoke uniforms, and detailed embroideries with precision. Our passion lies in blending tradition with modern aesthetics through every stitch. We create unique logos and custom designs that reflect your identity. Committed to quality and craftsmanship, we bring your vision to life with silk.</p>
+      <h2>About Us</h2>
+      <p>We are a home-grown design studio established in Guwahati, Assam, in 2004. Since our inception, we have maintained a strong commitment to sustainability and ethical business practices. Our journey began with a simple yet powerful mission: to bring the timeless beauty of Assam’s heritage fabrics to the world. Specializing in exquisite Muga silk, we celebrate the unique texture and natural golden sheen that makes this fabric truly special. Muga silk is not just a fabric for us—it is a legacy we honor and preserve through our work.</p>
+
+      <p>At the heart of our studio is a dedication to using only the best products. We carefully source our silk and materials to ensure quality and authenticity. Our customers enjoy fair pricing without sacrificing excellence, reflecting our belief that luxury should be accessible and responsible. Over the years, we have developed close relationships with trusted local suppliers and artisans. This network allows us to maintain consistency and integrity in every creation.</p>
+
+      <p>Our design philosophy blends tradition with modern aesthetics. We craft elegant clothes that are both timeless and contemporary. From bespoke uniforms to intricately embroidered garments, each piece is made with precision and care. Our artisans pay attention to every detail, ensuring that the stitching, patterns, and finishes reflect expert craftsmanship. Beyond clothing, we also specialize in creating unique logos and custom designs that capture the identity and spirit of our clients.</p>
+
+      <p>Sustainability is woven into every stage of our production process. We minimize waste and emphasize environmentally friendly techniques wherever possible. Supporting local communities is another cornerstone of our approach. By sourcing materials and labor locally, we help preserve traditional crafts and provide livelihoods to skilled artisans.</p>
+
+      <p>Our studio is passionate about innovation while staying true to Assam’s rich textile heritage. We constantly explore new design ideas, techniques, and collaborations to bring fresh perspectives to silk fashion. At the same time, we honor the cultural significance of Muga silk by respecting its origins and traditional methods.</p>
+
+      <p>Customer satisfaction is central to everything we do. We listen closely to your vision and bring it to life with the highest standards of quality and artistry. Our creations are not just products—they are stories told through fabric, thread, and design. Each piece is crafted to be a lasting treasure, made to endure beyond trends and seasons.</p>
+
+      <p>As we continue to grow, we remain dedicated to sustainability, fair pricing, and quality craftsmanship. We are grateful to be part of a community that values heritage and innovation alike. Thank you for trusting us with your silk dreams since 2004. We look forward to creating many more beautiful stories together.</p>
+
+
+
     </section>
 
     <section id="products">
       <h2>Products</h2>
-      <ul>
-        <li>Designer Silk Clothing (Shirts/Trousers/Dresses/Sarees/Mekhela Chador/Salwar Suits/Lahenga)</li>
-        <li>Home Furnishing (Cushion Covers/Curtains/Table Cloths/Table Runners)</li>
-        <li>Uniforms (Schools/Colleges/Corporate/Hospitals/Hotels/Government)</li>
-        <li>Logo Designing and Embroidery</li>
-      </ul>
+
+      <p class="product-heading">Designer Silk Clothing (Shirts/Trousers/Dresses/Sarees/Mekhela Chador/Salwar Suits/Lahenga)</p>
+      <p>We offer an exclusive range of designer silk clothing crafted with utmost care and precision. Our collection includes elegant shirts, trousers, dresses, traditional sarees, Mekhela Chador, salwar suits, and lehengas made from high-quality silk fabrics. Each piece reflects a perfect blend of contemporary style and timeless tradition, tailored to suit your unique taste.</p>
+
+      <p class="product-heading">Home Furnishing (Cushion Covers/Curtains/Table Cloths/Table Runners)</p>
+      <p>Our home furnishing products bring a touch of luxury and sophistication to your living spaces. We create beautiful cushion covers, curtains, table cloths, and table runners using premium fabrics that enhance both comfort and style. These pieces are designed to complement your décor while adding warmth and elegance to every room.</p>
+
+      <p class="product-heading">Uniforms (Schools/Colleges/Corporate/Hospitals/Hotels/Government)</p>
+      <p>We specialize in designing and manufacturing uniforms tailored for a variety of institutions, including schools, colleges, corporate offices, hospitals, hotels, and government organizations. Our uniforms combine durability with professional aesthetics, ensuring comfort and a polished look for your staff. We customize each design to meet your specific requirements, upholding your brand identity and standards.</p>
+
+      <p class="product-heading">Logo Designing and Embroidery</p>
+      <p>Our skilled team provides creative logo designing and detailed embroidery services to give your brand a distinct identity. We transform your ideas into visually appealing designs that can be embroidered on clothing, uniforms, and accessories. With precision craftsmanship, we ensure every stitch enhances your brand’s recognition and professionalism.</p>
     </section>
 
     <section id="images">
       <h2>Images</h2>
       <div class="gallery">
-        <img src="images/yarn.jpg" alt="Muga Yarn">
+        <img src="images/kurta1.jpg" alt="Design 4">
+        <img src="images/kurta2.jpg" alt="Design 5">
+        <img src="images/sari1.jpg" alt="Design 7">
+        <img src="images/half_jacket.jpg" alt="Design 1">
         <img src="images/shirt.jpg" alt="Design 2">
-        <img src="images/shorts.jpg" alt="Design 3">
-        <!-- Add more images here -->
+        <img src="images/shirt1.jpg" alt="Design 3">
       </div>
     </section>
 
     <section id="contact">
-      <h2>Contact</h2>
-      <p>Mobile: +91 98640-95920, +91 97060-15920</p>
-      <p>Email: dp_mitaas@yahoo.com</p>
-      <p>Address: A.K. Azad Road, Rehabari, Guwahati, Assam</p>
+      <h2>Contact Us:</h2>
+      <p><strong>Mobile:</strong> +91 98640-95920, +91 97060-15920</p>
+      <p><strong>Email:</strong> dp_mitaas@yahoo.com</p>
+      <p><strong>Address:</strong> A.K. Azad Road, Rehabari, Guwahati, Assam</p>
+
+      <h3>Send us a message</h3>
+      <div class="form-box">
+        <form action="https://formsubmit.co/dp_mitaas@yahoo.com" method="POST">
+          <input type="hidden" name="_captcha" value="false">
+
+          <label for="name">Name:</label>
+          <input type="text" name="name" required>
+
+          <label for="email">Email:</label>
+          <input type="email" name="email" required>
+
+          <label for="message">Message:</label>
+          <textarea name="message" rows="5" required></textarea>
+
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </section>
   </div>
 
@@ -168,19 +318,35 @@
 
   <a href="#top" class="home-btn" title="Back to Top">⌂</a>
 
-<script>
-  function showSection(sectionId) {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-      if (section.id === sectionId) {
-        section.classList.add('active');
-      } else {
+  <script>
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(section => {
         section.classList.remove('active');
-      }
-    });
-    window.scrollTo({top:0, behavior: 'smooth'});
-  }
-</script>
+      });
+      document.getElementById(sectionId).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
 
+    const previews = {
+      about: `<strong>About Us</strong><br>Established in 2004, specializing in Muga silk, blending tradition with modern aesthetics.`,
+      products: `<strong>Products</strong><br>Designer silk clothing, home furnishings, uniforms, and logo embroidery.`,
+      images: `<strong>Gallery Preview</strong><br><img src="images/kurta1.jpg" alt="Preview" style="max-width:100%; border-radius:4px; margin-top:8px;">`,
+      contact: `<strong>Contact Us</strong><br>Reach us by phone or email, or send a message through the contact form.`
+    };
+
+    const previewBox = document.createElement('div');
+    previewBox.id = 'preview-box';
+    document.querySelector('nav').appendChild(previewBox);
+
+    function showPreview(section) {
+      previewBox.innerHTML = previews[section] || '';
+      previewBox.style.display = 'block';
+    }
+
+    function hidePreview() {
+      previewBox.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
