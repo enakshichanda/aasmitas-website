@@ -197,10 +197,9 @@
       form textarea {
         width: 100%;
       }
+      /* Hide preview on small screens */
       #preview-box {
-        width: 90vw;
-        left: 5%;
-        transform: none;
+        display: none !important;
       }
     }
   </style>
@@ -253,8 +252,6 @@
       <p>Customer satisfaction is central to everything we do. We listen closely to your vision and bring it to life with the highest standards of quality and artistry. Our creations are not just products—they are stories told through fabric, thread, and design. Each piece is crafted to be a lasting treasure, made to endure beyond trends and seasons.</p>
 
       <p>As we continue to grow, we remain dedicated to sustainability, fair pricing, and quality craftsmanship. We are grateful to be part of a community that values heritage and innovation alike. Thank you for trusting us with your silk dreams since 2004. We look forward to creating many more beautiful stories together.</p>
-
-
 
     </section>
 
@@ -331,20 +328,26 @@
     const previews = {
       about: `<strong>About Us</strong><br>Established in 2004, specializing in Muga silk, blending tradition with modern aesthetics.`,
       products: `<strong>Products</strong><br>Designer silk clothing, home furnishings, uniforms, and logo embroidery.`,
-      images: `<strong>Gallery Preview</strong><br><img src="images/kurta1.jpg" alt="Preview" style="max-width:100%; border-radius:4px; margin-top:8px;">`,
+      images: `<strong>Gallery Preview</strong><br><img src="images/Kurta1.jpg" alt="Preview" style="max-width:100%; border-radius:4px; margin-top:8px;">`,
       contact: `<strong>Contact Us</strong><br>Reach us by phone or email, or send a message through the contact form.`
     };
 
-    const previewBox = document.createElement('div');
-    previewBox.id = 'preview-box';
-    document.querySelector('nav').appendChild(previewBox);
+    const previewBox = document.getElementById('preview-box');
+    let isTouch = false;
+
+    document.addEventListener('touchstart', () => {
+      isTouch = true;
+      previewBox.style.display = 'none';
+    }, { once: true });
 
     function showPreview(section) {
+      if (window.innerWidth <= 600 || isTouch) return; // Disable on small or touch devices
       previewBox.innerHTML = previews[section] || '';
       previewBox.style.display = 'block';
     }
 
     function hidePreview() {
+      if (window.innerWidth <= 600 || isTouch) return;
       previewBox.style.display = 'none';
     }
   </script>
